@@ -127,13 +127,50 @@ defmodule Bootstrap do
   end
 
   defp prompt_required_name(opts) do
-    if opts[:yes] do
-      abort("no app name given. Pass it as an argument, e.g. `elixir #{@self_path} my_app`.")
-    end
+    suggested = suggested_name_from_cwd()
 
-    case prompt("New app name (snake_case, e.g. my_app): ", "") do
-      "" -> abort("no app name entered.")
-      name -> name
+    cond do
+      # Non-interactive: fall back to the folder name (the usual `git clone X && cd X`
+      # flow makes it the intended name); abort only if it isn't usable.
+      opts[:yes] and suggested != nil ->
+        info("Using app name #{inspect(suggested)} (from the current folder).")
+        suggested
+
+      opts[:yes] ->
+        abort("no app name given. Pass it as an argument, e.g. `elixir #{@self_path} my_app`.")
+
+      true ->
+        label =
+          if suggested,
+            do: "New app name (snake_case) [#{suggested}]: ",
+            else: "New app name (snake_case, e.g. my_app): "
+
+        case prompt(label, "") do
+          "" -> suggested || abort("no app name entered.")
+          name -> name
+        end
+    end
+  end
+
+  # Guess the app name from the current directory (the `git clone … my_app && cd
+  # my_app` flow makes the folder the intended name). Splits camelCase boundaries,
+  # lowercases, and collapses non-alphanumerics to underscores. Returns nil if the
+  # result isn't a valid snake_case name (e.g. starts with a digit), so the caller
+  # falls back to a plain prompt.
+  defp suggested_name_from_cwd() do
+    candidate =
+      File.cwd!()
+      |> Path.basename()
+      |> String.replace(~r/([a-z0-9])([A-Z])/, "\\1_\\2")
+      |> String.downcase()
+      |> String.replace(~r/[^a-z0-9]+/, "_")
+      |> String.trim("_")
+
+    cond do
+      candidate == "" -> nil
+      candidate == @old_otp -> nil
+      candidate =~ ~r/^[a-z][a-z0-9_]*$/ -> candidate
+      true -> nil
     end
   end
 
@@ -445,7 +482,8 @@ defmodule Bootstrap do
     info("""
     Usage: elixir #{@self_path} [NAME] [options]
 
-      NAME                snake_case app name (e.g. my_app). Prompted if omitted.
+      NAME                snake_case app name (e.g. my_app). If omitted, defaults to
+                          the current folder name (prompted, or used as-is with --yes).
 
     Options:
       --module NAME       override the derived PascalCase module (e.g. MyApp)

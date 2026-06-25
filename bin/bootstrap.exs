@@ -396,6 +396,7 @@ defmodule Bootstrap do
     ## Getting started
 
     ```sh
+    docker compose up -d           # start PostgreSQL
     mix setup                      # install deps, set up the DB, build assets, seed an admin
     iex -S mix phx.server          # start the server (http://localhost:4000)
     ```
@@ -445,6 +446,7 @@ defmodule Bootstrap do
 
     Next steps:
       git status                         # review the rename
+      docker compose up -d               # start Postgres (see docker-compose.yml)
       mix setup                          # deps, DB, assets, seed admin — all in one
       iex -S mix phx.server              # run it (http://localhost:4000)
       mix test  &&  (cd assets && npm test)   # verify (mix test sets up its own DB)

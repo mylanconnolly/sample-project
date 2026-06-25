@@ -445,12 +445,9 @@ defmodule Bootstrap do
 
     Next steps:
       git status                         # review the rename
-      mix deps.get
-      mix deps.unlock --unused
-      mix ash.codegen --check            # or regenerate: mix ash_typescript.codegen
-      (cd assets && npm install)
-      mix ecto.reset                     # and: MIX_ENV=test mix ecto.reset
-      mix test  &&  (cd assets && npm test)
+      mix setup                          # deps, DB, assets, seed admin — all in one
+      iex -S mix phx.server              # run it (http://localhost:4000)
+      mix test  &&  (cd assets && npm test)   # verify (mix test sets up its own DB)
       rm #{@self_path}                   # one-shot script; delete when done
     """)
   end

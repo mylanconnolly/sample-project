@@ -74,7 +74,12 @@ defmodule Bootstrap do
       abort("unknown option(s): #{bad}\nRun with --help to see usage.")
     end
 
-    {parsed, rest}
+    # OptionParser omits flags that weren't passed, so boolean options come back as
+    # nil. Default them to false up front — Elixir's `or`/`and` are strict and would
+    # raise BadBooleanError on a nil operand (e.g. `opts[:yes] or opts[:dry_run]`).
+    opts = Keyword.merge([yes: false, dry_run: false, help: false], parsed)
+
+    {opts, rest}
   end
 
   # --- Preflight guards ----------------------------------------------------------

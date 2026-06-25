@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <link rel="icon" href={~p"/favicon.svg"} type="image/svg+xml" />
+    <link rel="alternate icon" href={~p"/favicon.ico"} sizes="any" />
+    <.live_title default="SampleProject" suffix=" · Phoenix Framework" phx-no-format>{assigns[:page_title]}</.live_title>
+    <SampleProjectWeb.Vite.assets entry="js/app.js" />
+    <script>
+      (() => {
+        const prefersDark = () => matchMedia("(prefers-color-scheme: dark)").matches;
+        // shadcn/Tailwind dark mode is class-based (.dark); data-theme-source
+        // drives the three-way toggle indicator (system/light/dark).
+        const apply = (pref) => {
+          const dark = pref === "dark" || (pref === "system" && prefersDark());
+          document.documentElement.classList.toggle("dark", dark);
+          document.documentElement.setAttribute("data-theme-source", pref);
+        };
+        const setTheme = (pref) => {
+          if (pref === "system") localStorage.removeItem("phx:theme");
+          else localStorage.setItem("phx:theme", pref);
+          apply(pref);
+        };
+        setTheme(localStorage.getItem("phx:theme") || "system");
+        window.addEventListener("storage", (e) => e.key === "phx:theme" && apply(e.newValue || "system"));
+        window.addEventListener("phx:set-theme", (e) => setTheme(e.target.dataset.phxTheme));
+        matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+          if ((localStorage.getItem("phx:theme") || "system") === "system") apply("system");
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    {@inner_content}
+  </body>
+</html>

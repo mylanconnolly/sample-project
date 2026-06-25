@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <meta :if={assigns[:user_token]} name="user-token" content={@user_token} />
+    <link rel="icon" href={~p"/favicon.svg"} type="image/svg+xml" />
+    <link rel="alternate icon" href={~p"/favicon.ico"} sizes="any" />
+    <.live_title default="SampleProject">SampleProject</.live_title>
+    <%!-- Apply the saved theme before paint to avoid a flash of the wrong mode.
+          Keep the storage key in sync with assets/js/lib/theme.tsx. --%>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark =
+            stored === "dark" ||
+            ((!stored || stored === "system") &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var root = document.documentElement;
+          root.classList.toggle("dark", dark);
+          root.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    {@inner_content}
+    <SampleProjectWeb.Vite.assets entry="js/index.tsx" react />
+  </body>
+</html>

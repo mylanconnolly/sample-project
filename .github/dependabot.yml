@@ -1,0 +1,127 @@
+# Dependabot version-update config. Updates are grouped so related packages bump
+# together in a single PR instead of one-per-dependency noise.
+#
+# Notes specific to this repo:
+#   - The npm `phoenix*` packages are `file:../deps/*` links, so Dependabot can't
+#     bump them — they ride along with the mix `phoenix` group instead.
+#   - `@tiptap/*` is currently only a transitive dep (via @mdxeditor); the tiptap
+#     group is declared for when/if it becomes a direct dependency.
+#   - A dependency joins the FIRST group whose patterns it matches, so order
+#     matters (e.g. `ash_oban` matches `ash_*` before any oban group).
+version: 2
+updates:
+  # ---------------------------------------------------------------------------
+  # Elixir (mix) — repo root
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: mix
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      ash:
+        patterns:
+          - "ash"
+          - "ash_*"
+      phoenix:
+        patterns:
+          - "phoenix"
+          - "phoenix_*"
+          - "ecto"
+          - "ecto_sql"
+          - "postgrex"
+          - "bandit"
+          - "plug"
+          - "plug_*"
+      nx:
+        patterns:
+          - "nx"
+          - "exla"
+          - "bumblebee"
+      oban:
+        patterns:
+          - "oban"
+          - "oban_*"
+      telemetry:
+        patterns:
+          - "telemetry"
+          - "telemetry_*"
+      # Everything else: one grouped PR for low-risk patch/minor bumps.
+      mix-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ---------------------------------------------------------------------------
+  # Frontend (npm) — assets/
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: npm
+    directory: "/assets"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "tailwind-merge"
+          - "tw-animate-css"
+      # Rich-text / markdown editing stack.
+      editor:
+        patterns:
+          - "@mdxeditor/*"
+          - "@tiptap/*"
+          - "react-markdown"
+          - "remark-*"
+      dnd-kit:
+        patterns:
+          - "@dnd-kit/*"
+      build:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "typescript"
+      testing:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "@testing-library/*"
+          - "@playwright/test"
+          - "playwright"
+          - "jsdom"
+          - "msw"
+      # Everything else: one grouped PR for low-risk patch/minor bumps.
+      npm-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ---------------------------------------------------------------------------
+  # GitHub Actions — .github/workflows
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      github-actions:
+        patterns:
+          - "*"

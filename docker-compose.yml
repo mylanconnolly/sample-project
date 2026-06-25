@@ -1,0 +1,22 @@
+services:
+  postgres:
+    # pgvector image (Postgres 18 + the `vector` extension) — the stock postgres:18
+    # image lacks the extension binary, so `CREATE EXTENSION vector` would fail.
+    image: pgvector/pgvector:pg18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sample_project_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:

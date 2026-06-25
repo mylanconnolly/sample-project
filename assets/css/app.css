@@ -1,0 +1,260 @@
+/* See the Tailwind configuration guide for advanced usage
+   https://tailwindcss.com/docs/configuration */
+
+@import "tailwindcss" source(none);
+
+@import "tw-animate-css";
+
+@import "shadcn/tailwind.css";
+
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@source "../../deps/ash_authentication_phoenix";
+@source "../css";
+@source "../js";
+@source "../../lib/sample_project_web";
+
+/* A Tailwind plugin that makes "hero-#{ICON}" classes available.
+   The heroicons installation itself is managed by your mix.exs */
+@plugin "../vendor/heroicons";
+
+/* `prose` classes for rendering Markdown (project descriptions). */
+@plugin "@tailwindcss/typography";
+
+/* Add variants based on LiveView classes */
+@custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
+@custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
+@custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
+
+/* Class-based dark mode (shadcn standard); the root layout toggles `.dark`. */
+@custom-variant dark (&:is(.dark *));
+
+/* Make LiveView wrapper divs transparent for layout */
+[data-phx-session],
+[data-phx-teleported-src] {
+  display: contents;
+}
+
+/* This file is for your main application CSS */
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: "Geist Variable", sans-serif;
+  --font-mono:
+    "Geist Mono Variable", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(0.988 0.007 70);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.55 0.176 45);
+  --primary-foreground: oklch(0.985 0.012 80);
+  --secondary: oklch(0.966 0.008 70);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.966 0.008 70);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.966 0.008 70);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --warning: oklch(0.828 0.189 84.429);
+  --warning-foreground: oklch(0.279 0.077 45.635);
+  --success: oklch(0.723 0.193 149.579);
+  --success-foreground: oklch(0.982 0.018 155.826);
+  --info: oklch(0.623 0.214 259.815);
+  --info-foreground: oklch(0.97 0.014 254.604);
+  --border: oklch(0.917 0.006 70);
+  --input: oklch(0.917 0.006 70);
+  --ring: oklch(0.55 0.176 45);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  /* Warm chrome: deliberately a step below the canvas (0.988) so the rail reads
+     as a distinct layer, while white (1.0) stays reserved for content. */
+  --sidebar: oklch(0.97 0.012 70);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.55 0.176 45);
+  --sidebar-primary-foreground: oklch(0.985 0.012 80);
+  /* Active/hover nav highlight: kept a clear step below the deepened base. */
+  --sidebar-accent: oklch(0.948 0.012 70);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.917 0.006 70);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.153 0.006 65);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.213 0.006 65);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.213 0.006 65);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.705 0.17 49);
+  --primary-foreground: oklch(0.22 0.045 52);
+  --secondary: oklch(0.276 0.007 65);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.276 0.007 65);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.276 0.007 65);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --warning: oklch(0.828 0.189 84.429);
+  --warning-foreground: oklch(0.279 0.077 45.635);
+  --success: oklch(0.696 0.17 162.48);
+  --success-foreground: oklch(0.393 0.095 152.535);
+  --info: oklch(0.707 0.165 254.624);
+  --info-foreground: oklch(0.379 0.146 265.522);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.705 0.17 49);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  /* Warm chrome: a step below the canvas (0.153) so the rail recedes as a
+     distinct layer beneath content, mirroring the light theme. */
+  --sidebar: oklch(0.138 0.008 65);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.705 0.17 49);
+  --sidebar-primary-foreground: oklch(0.22 0.045 52);
+  --sidebar-accent: oklch(0.276 0.007 65);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* MDXEditor (the markdown editor for ticket/comment body and project
+   description): map its palette and fonts onto the app theme tokens so it
+   blends with the shadcn inputs. Scoped to `.mdxeditor.{light,dark}-theme` to
+   outrank the library's own theme rules regardless of stylesheet order — the
+   editor root carries both `mdxeditor` and a theme class. Dark mode follows the
+   app's `.dark` cascade because the tokens themselves already do. */
+.mdxeditor.light-theme,
+.mdxeditor.dark-theme {
+  --font-body: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --baseBg: transparent;
+  --baseBgSubtle: transparent;
+  --baseBgHover: var(--muted);
+  --baseBgActive: var(--muted);
+  --baseBorder: var(--border);
+  --baseBorderHover: var(--border);
+  --baseText: var(--foreground);
+  --baseTextContrast: var(--foreground);
+
+  --accentBg: var(--accent);
+  --accentBgHover: var(--accent);
+  --accentBgActive: var(--accent);
+  --accentBorder: var(--ring);
+  --accentText: var(--primary);
+  --accentSolid: var(--primary);
+}
+
+/* Toolbar sits on a muted strip with a divider, like the rest of the chrome.
+   MDXEditor's icons default to their intrinsic 24px, which is oversized next to
+   our small body text — scale the strip and icons down to match. */
+.mdxeditor [role="toolbar"] {
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.25rem 0.375rem;
+  font-size: 0.8125rem;
+}
+/* All of MDXEditor's chrome icons (toolbar, table column/row menus, add/delete
+   controls, alignment popover) default to their intrinsic 24px. Markdown
+   content uses <img>, not inline <svg>, so sizing every icon here is safe. */
+.mdxeditor svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+/* The table-cell and link popovers portal out to <body>, beyond `.mdxeditor`,
+   so size their icons via MDXEditor's CSS-module class names (the readable
+   substring is stable; the trailing hash is not). */
+[class*="popoverContent"] svg,
+[class*="PopoverContent"] svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* Task-list checkboxes default to a 1rem box pinned to the line top, reading
+   oversized and high next to the prose-sm text. Shrink slightly and vertically
+   centre the box (and its checkmark, for checked items) against the line. */
+.mdxeditor [class*="listItemUnchecked"]:before,
+.mdxeditor [class*="listItemChecked"]:before {
+  width: 0.9rem;
+  height: 0.9rem;
+  top: 0.3rem;
+}
+.mdxeditor [class*="listItemChecked"]:after {
+  top: 0.42rem;
+}
+
+/* Match the padding of the textarea this editor replaces. */
+.mdxeditor [contenteditable="true"] {
+  padding: 0.375rem 0.625rem;
+}

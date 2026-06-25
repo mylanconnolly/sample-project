@@ -1,0 +1,171 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ELIXIR_VERSION: "1.20.1-otp-28"
+  OTP_VERSION: "28.5"
+  NODE_VERSION: "26"
+  # Compile dependencies across OS processes (Elixir 1.18+). ubuntu-latest
+  # runners have 4 vCPUs.
+  MIX_OS_DEPS_COMPILE_PARTITION_COUNT: "4"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Backend: formatting + ExUnit (Ash sets up & migrates the test DB).
+  # ---------------------------------------------------------------------------
+  elixir:
+    name: Elixir (format + test)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        # pgvector image (Postgres + the `vector` extension preinstalled); the
+        # plain postgres:18 image lacks it, so CREATE EXTENSION "vector" fails.
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v7
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: actions/cache@v5
+        with:
+          path: |
+            deps
+            _build
+          # Env-specific key so the dev-env e2e build can't clobber this test build.
+          key: ${{ runner.os }}-mix-test-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-test-
+      # A restored `_build` can carry app beams whose mtimes make Mix skip
+      # recompiling, serving stale app code. Force the app (only) to rebuild.
+      - run: rm -rf _build/*/lib/sample_project
+      - run: mix deps.get
+      - run: mix deps.compile
+      - run: mix format --check-formatted
+      - run: mix compile --warnings-as-errors
+      # The `test` alias runs `ash.setup` first, which creates & migrates the DB.
+      - run: mix test
+
+  # ---------------------------------------------------------------------------
+  # Frontend unit/component tests. Needs `mix deps.get` because package.json
+  # depends on phoenix via `file:../deps/phoenix`.
+  # ---------------------------------------------------------------------------
+  assets:
+    name: Assets (types + lint + vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: assets/package-lock.json
+      - uses: actions/cache@v5
+        with:
+          path: deps
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-deps-
+      # Materialize deps/phoenix et al. for the `file:` npm dependencies.
+      - run: mix deps.get
+      - run: npm ci
+        working-directory: assets
+      - run: npx tsc --noEmit -p tsconfig.json
+        working-directory: assets
+      - run: npm run format:check
+        working-directory: assets
+      - run: npx vitest run
+        working-directory: assets
+
+  # ---------------------------------------------------------------------------
+  # End-to-end (Playwright). Boots the real dev server (which seeds & starts the
+  # Vite watcher) via the config's webServer command.
+  # ---------------------------------------------------------------------------
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        # 17+ required: AshPostgres uses MERGE ... RETURNING (e.g. token upserts),
+        # which Postgres <17 rejects with a syntax error. Match the elixir job.
+        # pgvector image: bundles the `vector` extension (plain postgres:18 lacks it).
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: assets/package-lock.json
+      - uses: actions/cache@v5
+        with:
+          path: |
+            deps
+            _build
+          # Env-specific key so the test-env build can't clobber this dev build.
+          key: ${{ runner.os }}-mix-dev-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-dev-
+      # A restored `_build` can carry app beams whose mtimes make Mix skip
+      # recompiling — which would serve a stale router WITHOUT /dev/login. Force
+      # the app (only) to rebuild from the checked-out source.
+      - run: rm -rf _build/*/lib/sample_project
+      - run: mix deps.get
+      # Create & migrate the dev DB the Playwright webServer boots against.
+      - run: mix ash.setup
+      # Seed the E2E fixtures explicitly (not only via the webServer command) so
+      # the run logs confirm the user was created in the same dev DB the server
+      # reads, and global-setup's magic-link request always finds it.
+      - run: mix run priv/repo/seeds/e2e.exs
+      - run: npm ci
+        working-directory: assets
+      - run: npx playwright install --with-deps chromium
+        working-directory: assets
+      - run: npx playwright test
+        working-directory: assets
+        env:
+          CI: "true"
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: assets/playwright-report/
+          retention-days: 7

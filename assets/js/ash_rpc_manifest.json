@@ -1,0 +1,884 @@
+{
+  "$schema": "https://github.com/ash-project/ash_typescript/blob/main/json-manifest-schema.json",
+  "actions": [
+    {
+      "actionType": "destroy",
+      "deprecated": false,
+      "description": "Delete a ApiKey",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "destroyApiKey",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "ApiKey",
+      "see": [],
+      "types": {
+        "result": "DestroyApiKeyResult"
+      },
+      "variantNames": {
+        "channel": "destroyApiKeyChannel",
+        "validation": "validateDestroyApiKey"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "create",
+      "deprecated": false,
+      "description": "Generate a new API key for the current user.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "generateApiKey",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "ApiKey",
+      "see": [],
+      "types": {
+        "fields": "GenerateApiKeyFields",
+        "inferResult": "InferGenerateApiKeyResult",
+        "input": "GenerateApiKeyInput",
+        "result": "GenerateApiKeyResult"
+      },
+      "variantNames": {
+        "channel": "generateApiKeyChannel",
+        "validation": "validateGenerateApiKey"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "List the current user's API keys, newest first.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "listApiKeys",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "ApiKey",
+      "see": [],
+      "types": {
+        "fields": "ListApiKeysFields",
+        "filterInput": "ApiKeyFilterInput",
+        "inferResult": "InferListApiKeysResult",
+        "result": "ListApiKeysResult"
+      },
+      "variantNames": {
+        "channel": "listApiKeysChannel",
+        "validation": "validateListApiKeys"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "update",
+      "deprecated": false,
+      "description": "Re-activate a previously deactivated user.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "activateUser",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "ActivateUserFields",
+        "inferResult": "InferActivateUserResult",
+        "result": "ActivateUserResult"
+      },
+      "variantNames": {
+        "channel": "activateUserChannel",
+        "validation": "validateActivateUser"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "update",
+      "deprecated": false,
+      "description": "Mark a user inactive, preventing them from signing in.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "deactivateUser",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "DeactivateUserFields",
+        "inferResult": "InferDeactivateUserResult",
+        "result": "DeactivateUserResult"
+      },
+      "variantNames": {
+        "channel": "deactivateUserChannel",
+        "validation": "validateDeactivateUser"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Returns the current actor (the signed-in user).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "getCurrentUser",
+      "get": true,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": true,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "GetCurrentUserFields",
+        "filterInput": "UserFilterInput",
+        "inferResult": "InferGetCurrentUserResult",
+        "result": "GetCurrentUserResult"
+      },
+      "variantNames": {
+        "channel": "getCurrentUserChannel",
+        "validation": "validateGetCurrentUser"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Fetch a single user by id (admin).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "getUser",
+      "get": true,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": true,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "GetUserFields",
+        "filterInput": "UserFilterInput",
+        "inferResult": "InferGetUserResult",
+        "input": "GetUserInput",
+        "result": "GetUserResult"
+      },
+      "variantNames": {
+        "channel": "getUserChannel",
+        "validation": "validateGetUser"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "create",
+      "deprecated": false,
+      "description": "Invite a new user: create the account and email them a magic link.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "inviteUser",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "InviteUserFields",
+        "inferResult": "InferInviteUserResult",
+        "input": "InviteUserInput",
+        "result": "InviteUserResult"
+      },
+      "variantNames": {
+        "channel": "inviteUserChannel",
+        "validation": "validateInviteUser"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Admin listing of users, paginated/sortable/searchable by email.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "listUsers",
+      "get": false,
+      "input": "optional",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": true,
+        "offset": false,
+        "required": false,
+        "supported": true
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "config": "ListUsersConfig",
+        "fields": "ListUsersFields",
+        "filterInput": "UserFilterInput",
+        "inferResult": "InferListUsersResult",
+        "input": "ListUsersInput",
+        "result": "ListUsersResult"
+      },
+      "variantNames": {
+        "channel": "listUsersChannel",
+        "validation": "validateListUsers"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "action",
+      "deprecated": false,
+      "description": "Execute generic action on User",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "requestMagicLink",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "input": "RequestMagicLinkInput",
+        "result": "RequestMagicLinkResult"
+      },
+      "variantNames": {
+        "channel": "requestMagicLinkChannel",
+        "validation": "validateRequestMagicLink"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "update",
+      "deprecated": false,
+      "description": "Self-service update of the signed-in user's own profile (display name).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "updateProfile",
+      "get": false,
+      "input": "optional",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "UpdateProfileFields",
+        "inferResult": "InferUpdateProfileResult",
+        "input": "UpdateProfileInput",
+        "result": "UpdateProfileResult"
+      },
+      "variantNames": {
+        "channel": "updateProfileChannel",
+        "validation": "validateUpdateProfile"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "update",
+      "deprecated": false,
+      "description": "Admin update of a user's email, role, and display name.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "updateUser",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "User",
+      "see": [],
+      "types": {
+        "fields": "UpdateUserFields",
+        "inferResult": "InferUpdateUserResult",
+        "input": "UpdateUserInput",
+        "result": "UpdateUserResult"
+      },
+      "variantNames": {
+        "channel": "updateUserChannel",
+        "validation": "validateUpdateUser"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Browse the access log, newest first. App-admin only (see policies).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "listAccessLogs",
+      "get": false,
+      "input": "optional",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": true,
+        "offset": false,
+        "required": false,
+        "supported": true
+      },
+      "resource": "AccessLog",
+      "see": [],
+      "types": {
+        "config": "ListAccessLogsConfig",
+        "fields": "ListAccessLogsFields",
+        "filterInput": "AccessLogFilterInput",
+        "inferResult": "InferListAccessLogsResult",
+        "input": "ListAccessLogsInput",
+        "result": "ListAccessLogsResult"
+      },
+      "variantNames": {
+        "channel": "listAccessLogsChannel",
+        "validation": "validateListAccessLogs"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "create",
+      "deprecated": false,
+      "description": "Create a memory. The acting user becomes its owner. For repository scope, pass repo_key.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "createMemory",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "Memory",
+      "see": [],
+      "types": {
+        "fields": "CreateMemoryFields",
+        "inferResult": "InferCreateMemoryResult",
+        "input": "CreateMemoryInput",
+        "result": "CreateMemoryResult"
+      },
+      "variantNames": {
+        "channel": "createMemoryChannel",
+        "validation": "validateCreateMemory"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "destroy",
+      "deprecated": false,
+      "description": "Delete a memory.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "deleteMemory",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "Memory",
+      "see": [],
+      "types": {
+        "result": "DeleteMemoryResult"
+      },
+      "variantNames": {
+        "channel": "deleteMemoryChannel",
+        "validation": "validateDeleteMemory"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Fetch a single memory by id.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "getMemory",
+      "get": true,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": true,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "Memory",
+      "see": [],
+      "types": {
+        "fields": "GetMemoryFields",
+        "filterInput": "MemoryFilterInput",
+        "inferResult": "InferGetMemoryResult",
+        "input": "GetMemoryInput",
+        "result": "GetMemoryResult"
+      },
+      "variantNames": {
+        "channel": "getMemoryChannel",
+        "validation": "validateGetMemory"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "List memories visible to the actor, optionally filtered by scope/repo_key and a keyword search over content. Newest first.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "listMemories",
+      "get": false,
+      "input": "optional",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": true,
+        "offset": false,
+        "required": false,
+        "supported": true
+      },
+      "resource": "Memory",
+      "see": [],
+      "types": {
+        "config": "ListMemoriesConfig",
+        "fields": "ListMemoriesFields",
+        "filterInput": "MemoryFilterInput",
+        "inferResult": "InferListMemoriesResult",
+        "input": "ListMemoriesInput",
+        "result": "ListMemoriesResult"
+      },
+      "variantNames": {
+        "channel": "listMemoriesChannel",
+        "validation": "validateListMemories"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Semantic search over memories the actor may see. The server embeds the query and ranks results by vector similarity. Optionally narrow by scope/repo_key.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "searchMemories",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "Memory",
+      "see": [],
+      "types": {
+        "fields": "SearchMemoriesFields",
+        "filterInput": "MemoryFilterInput",
+        "inferResult": "InferSearchMemoriesResult",
+        "input": "SearchMemoriesInput",
+        "result": "SearchMemoriesResult"
+      },
+      "variantNames": {
+        "channel": "searchMemoriesChannel",
+        "validation": "validateSearchMemories"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "update",
+      "deprecated": false,
+      "description": "Update a memory's content (and, for repository scope, its repo_key).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "updateMemory",
+      "get": false,
+      "input": "required",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "Memory",
+      "see": [],
+      "types": {
+        "fields": "UpdateMemoryFields",
+        "inferResult": "InferUpdateMemoryResult",
+        "input": "UpdateMemoryInput",
+        "result": "UpdateMemoryResult"
+      },
+      "variantNames": {
+        "channel": "updateMemoryChannel",
+        "validation": "validateUpdateMemory"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Fetch the singleton Anthropic configuration (a 0- or 1-element list).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "getAnthropicConfig",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "AnthropicConfig",
+      "see": [],
+      "types": {
+        "fields": "GetAnthropicConfigFields",
+        "filterInput": "AnthropicConfigFilterInput",
+        "inferResult": "InferGetAnthropicConfigResult",
+        "result": "GetAnthropicConfigResult"
+      },
+      "variantNames": {
+        "channel": "getAnthropicConfigChannel",
+        "validation": "validateGetAnthropicConfig"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "action",
+      "deprecated": false,
+      "description": "List the Claude models available to the configured API key. Results are\ncached ~1h by the client; returns [] when no key is set or the call fails.\n",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "listAnthropicModels",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "AnthropicConfig",
+      "see": [],
+      "types": {
+        "fields": "ListAnthropicModelsFields",
+        "inferResult": "InferListAnthropicModelsResult",
+        "result": "ListAnthropicModelsResult"
+      },
+      "variantNames": {
+        "channel": "listAnthropicModelsChannel",
+        "validation": "validateListAnthropicModels"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "create",
+      "deprecated": false,
+      "description": "Create or update the singleton Anthropic configuration.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "setAnthropicConfig",
+      "get": false,
+      "input": "optional",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "AnthropicConfig",
+      "see": [],
+      "types": {
+        "fields": "SetAnthropicConfigFields",
+        "inferResult": "InferSetAnthropicConfigResult",
+        "input": "SetAnthropicConfigInput",
+        "result": "SetAnthropicConfigResult"
+      },
+      "variantNames": {
+        "channel": "setAnthropicConfigChannel",
+        "validation": "validateSetAnthropicConfig"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "read",
+      "deprecated": false,
+      "description": "Fetch the singleton GCS configuration (a 0- or 1-element list).",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "getGcsConfig",
+      "get": false,
+      "input": "none",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "GcsConfig",
+      "see": [],
+      "types": {
+        "fields": "GetGcsConfigFields",
+        "filterInput": "GcsConfigFilterInput",
+        "inferResult": "InferGetGcsConfigResult",
+        "result": "GetGcsConfigResult"
+      },
+      "variantNames": {
+        "channel": "getGcsConfigChannel",
+        "validation": "validateGetGcsConfig"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    },
+    {
+      "actionType": "create",
+      "deprecated": false,
+      "description": "Create or update the singleton GCS configuration.",
+      "enableFilter": true,
+      "enableSort": true,
+      "functionName": "setGcsConfig",
+      "get": false,
+      "input": "optional",
+      "namespace": null,
+      "pagination": {
+        "get": false,
+        "keyset": false,
+        "offset": false,
+        "required": false,
+        "supported": false
+      },
+      "resource": "GcsConfig",
+      "see": [],
+      "types": {
+        "fields": "SetGcsConfigFields",
+        "inferResult": "InferSetGcsConfigResult",
+        "input": "SetGcsConfigInput",
+        "result": "SetGcsConfigResult"
+      },
+      "variantNames": {
+        "channel": "setGcsConfigChannel",
+        "validation": "validateSetGcsConfig"
+      },
+      "variants": {
+        "channel": true,
+        "valibot": false,
+        "validation": true,
+        "zod": false
+      }
+    }
+  ],
+  "files": {
+    "rpc": {
+      "filename": "./ash_rpc.ts",
+      "importPath": "./ash_rpc"
+    },
+    "typedChannels": {
+      "filename": "./ash_typed_channels.ts",
+      "importPath": "./ash_typed_channels"
+    },
+    "types": {
+      "filename": "./ash_types.ts",
+      "importPath": "./ash_types"
+    }
+  },
+  "generatedAt": "2026-06-25",
+  "typedControllerRoutes": [],
+  "version": "1.0"
+}

@@ -49,7 +49,7 @@ jobs:
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: |
             deps
@@ -80,12 +80,12 @@ jobs:
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: assets/package-lock.json
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: deps
           key: ${{ runner.os }}-deps-${{ hashFiles('**/mix.lock') }}
@@ -131,12 +131,12 @@ jobs:
         with:
           otp-version: ${{ env.OTP_VERSION }}
           elixir-version: ${{ env.ELIXIR_VERSION }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: assets/package-lock.json
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: |
             deps

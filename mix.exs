@@ -95,7 +95,7 @@ defmodule SampleProject.MixProject do
       {:sourceror, "~> 1.8", only: [:dev, :test]},
       {:oban, "~> 2.0"},
       {:ash_typescript, "~> 0.17"},
-      {:ash_ai, "~> 0.7"},
+      {:ash_ai, "~> 1.0"},
       {:usage_rules, "~> 1.0", only: [:dev]},
       {:ash_cloak, "~> 0.3"},
       {:cloak, "~> 1.0"},

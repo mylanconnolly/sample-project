@@ -130,7 +130,7 @@ defmodule SampleProject.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.2.0"},
+      {:dns_cluster, "~> 0.3.0"},
       {:bandit, "~> 1.5"},
       # Kubernetes-aware health checks (startup/liveness/readiness probes).
       # See SampleProject.Health and the plug at the top of SampleProjectWeb.Endpoint.
